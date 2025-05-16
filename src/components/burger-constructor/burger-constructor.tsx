@@ -43,11 +43,12 @@ export const BurgerConstructor: FC = () => {
     }
   }, [userIsAuth, constructorItems, dispatch, navigate]);
 
-  const closeOrderModal = (() => {
+  const closeOrderModal = () => {
+    console.log('Closing order modal');
     dispatch(clearOrder());
     dispatch(clearConstructor());
     navigate('/');
-  });
+  };
 
   return (
     <BurgerConstructorUI

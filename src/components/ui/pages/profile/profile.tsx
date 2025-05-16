@@ -1,29 +1,30 @@
 import { FC } from 'react';
-
 import { Button, Input } from '@zlden/react-developer-burger-ui-components';
 import styles from './profile.module.css';
 import commonStyles from '../common.module.css';
-
 import { ProfileUIProps } from './type';
 import { ProfileMenu } from '@components';
 
 export const ProfileUI: FC<ProfileUIProps> = ({
-  formValue,
-  isFormChanged,
-  updateUserError,
-  handleSubmit,
-  handleCancel,
-  handleInputChange
-}) => (
-  <main className={`${commonStyles.container}`}>
-    <div className={`mt-30 mr-15 ${styles.menu}`}>
-      <ProfileMenu />
-    </div>
-    <form
-      className={`mt-30 ${styles.form} ${commonStyles.form}`}
-      onSubmit={handleSubmit}
-    >
-      <>
+                                                formValue,
+                                                isFormChanged,
+                                                updateUserError,
+                                                handleSubmit,
+                                                handleCancel,
+                                                handleInputChange
+                                              }) => {
+  // Пустые обработчики для pointer-событий
+  const handlePointerEvent = () => {};
+
+  return (
+    <main className={`${commonStyles.container}`}>
+      <div className={`mt-30 mr-15 ${styles.menu}`}>
+        <ProfileMenu />
+      </div>
+      <form
+        className={`mt-30 ${styles.form} ${commonStyles.form}`}
+        onSubmit={handleSubmit}
+      >
         <div className='pb-6'>
           <Input
             type={'text'}
@@ -35,6 +36,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
+            onPointerEnterCapture={handlePointerEvent}
+            onPointerLeaveCapture={handlePointerEvent}
           />
         </div>
         <div className='pb-6'>
@@ -48,6 +51,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
+            onPointerEnterCapture={handlePointerEvent}
+            onPointerLeaveCapture={handlePointerEvent}
           />
         </div>
         <div className='pb-6'>
@@ -61,6 +66,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
+            onPointerEnterCapture={handlePointerEvent}
+            onPointerLeaveCapture={handlePointerEvent}
           />
         </div>
         {isFormChanged && (
@@ -79,13 +86,11 @@ export const ProfileUI: FC<ProfileUIProps> = ({
           </div>
         )}
         {updateUserError && (
-          <p
-            className={`${commonStyles.error} pt-5 text text_type_main-default`}
-          >
+          <p className={`${commonStyles.error} pt-5 text text_type_main-default`}>
             {updateUserError}
           </p>
         )}
-      </>
-    </form>
-  </main>
-);
+      </form>
+    </main>
+  );
+};
