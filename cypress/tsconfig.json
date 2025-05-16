@@ -1,4 +1,5 @@
 {
+
   // расширяем основной конфиг всего проекта
   "extends": "../tsconfig.json",
   "compilerOptions": {
