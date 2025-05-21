@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient, TConstructorIngredient } from '../../utils/types';
 import { v4 as uuidv4 } from 'uuid';
+import { createSelector } from '@reduxjs/toolkit';
 
 type TBurgerConstructorState = {
   bun: TConstructorIngredient | null;
@@ -51,25 +52,40 @@ const burgerConstructorSlice = createSlice({
         ];
       }
     },
-    clearConstructor: (state) => (state = initialState)
+    clearConstructor: (state) => {
+      state.bun = null;
+      state.ingredients = [];
+    },
+    restoreConstructor: (state, action: PayloadAction<{
+      bun: TConstructorIngredient | null;
+      ingredients: TConstructorIngredient[];
+    }>) => {
+      state.bun = action.payload.bun;
+      state.ingredients = action.payload.ingredients;
+    }
   },
   selectors: {
-    getBurgerConstructorSelector: (state) => {
-      return state;
-    },
-    getIngredientsQuantitySelector: (state) => {
-      const quantities: { [key: string]: number } = {};
-      const { bun, ingredients } = state;
-      if (bun) {
-        quantities[bun._id] = (quantities[bun._id] || 0) + 2;
+    getBurgerConstructorSelector: createSelector(
+      [(state: TBurgerConstructorState) => state],
+      (state) => state
+    ),
+    getIngredientsQuantitySelector: createSelector(
+      [(state: TBurgerConstructorState) => state],
+      (state) => {
+        const quantities: { [key: string]: number } = {};
+        const { bun, ingredients } = state;
+
+        if (bun) {
+          quantities[bun._id] = (quantities[bun._id] || 0) + 2;
+        }
+
+        ingredients.forEach((ingredient) => {
+          quantities[ingredient._id] = (quantities[ingredient._id] || 0) + 1;
+        });
+
+        return quantities;
       }
-
-      ingredients.forEach((ingredient) => {
-        quantities[ingredient._id] = (quantities[ingredient._id] || 0) + 1;
-      });
-
-      return quantities;
-    }
+    )
   }
 });
 
@@ -80,5 +96,6 @@ export const {
   addConstructorItem,
   removeConstructorItem,
   moveConstructorItem,
-  clearConstructor
+  clearConstructor,
+  restoreConstructor
 } = burgerConstructorSlice.actions;
